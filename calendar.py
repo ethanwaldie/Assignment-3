@@ -1,6 +1,3 @@
-
-Andrej = 'DUMB BITCH'
-
 course_desc_page = "http://www.cs.toronto.edu/~guerzhoy/180/assignments/a3/csc_short.htm"
 
 def get_individual_courses(course_desc_page):
@@ -29,34 +26,30 @@ def get_course_details(course_des):
     course_info.append( course_des[(pos + 13):])
     
     return course_info
-    
 
-def JANDA_TOSS_SALAD(price):
+def prereq_str_to_list(prereq_str):
     
-    if price > 0:
-        return "WRONG HE DOES IT FOR FREE!"
+    course_options = []
     
-    # Toss SALAD ANYWHERE ON DA PLANET
-    global Andrej
-    
-    salads_tossed = 0
-    
-    salads_left = 7125000000
-    while Andrej == 'DUMB BITCH':
+    while prereq_str.find("</A>") > 0:
+        pos = prereq_str.find("</A>")
+        print (pos)
         
-        if salads_tossed%2 == 1:
-            print ("SALAD TOSSED WITH JELLEY")
-        else:
-            print ("SALAD TOSSED WITH SYRUP")
-            salads_tossed += 1
-            
-            salads_left -= 1
-            
-        if salads_left == 0:
-            #AGAIN
-            JANDA_TOSS_SALAD(0)
+        course_options.append(prereq_str[pos-8:pos])
+        
+        print(course_options)
+        if prereq_str[pos+4:pos+5] != ' ':
+            course_options.append(prereq_str[pos+4:pos+5])
+        print(course_options)
+        prereq_str= prereq_str[pos + 4:]
+        
+        print(prereq_str)
+        
     
-    
+    return course_options
+        
+        
+        
     
     
     
@@ -68,7 +61,10 @@ def JANDA_TOSS_SALAD(price):
 if __name__ == '__main__':
     #get_individual_courses(course_desc_page)
     
-    get_course_details(course_des)
-
+    page = get_course_details(course_des)
     
+    test = '<A HREF="crs_csc.htm#CSC148H1">CSC148H1</A>/<A HREF="crs_csc.htm#CSC150H1">CSC150H1</A>, <A HREF="crs_csc.htm#CSC165H1">CSC165H1</A>/<A HREF="crs_csc.htm#CSC240H1">CSC240H1</A>/(<A HREF="crs_csc.htm#CSC148H1">CSC148H1</A> as given before FALL 2003); CGPA 1.5/enrolment in a CSC subject POSt.<BR>'
+
+
+    print(prereq_str_to_list(test))
 
