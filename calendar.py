@@ -1,5 +1,5 @@
 
-Andrej = 'DUMB BITCH'
+
 
 course_desc_page = "http://www.cs.toronto.edu/~guerzhoy/180/assignments/a3/csc_short.htm"
 
@@ -9,13 +9,13 @@ def get_individual_courses(course_desc_page):
     page = f.read().decode("utf-8")
     f.close()
     lis = page.rsplit('<P><B>')
-    print(lis)
     for x in lis:
         if 'DR=sci; BR=5' not in x:
             lis.remove(x)
-    print(lis)
+    return lis
     
-    
+        
+
 course_des = 'CSC209H1"></A> <P><B>CSC209H1<BR>Software Tools and Systems Programming [24L, 12T]</B> <P>Software techniques in a Unix-style environment, using scripting languages and a machine-oriented programming language (typically C). What goes on in the operating system when programs are executed. Core topics: creating and using software tools, pipes and filters, file processing, shell programming, processes, system calls, signals, basic network programming.<BR>Exclusion: <A HREF="crs_csc.htm#CSC372H1">CSC372H1</A>, 408H1, <A HREF="crs_csc.htm#CSC369H1">CSC369H1</A>, 468H1, <A HREF="crs_csc.htm#CSC469H1">CSC469H1</A>.<BR> Prerequisite: <A HREF="crs_csc.htm#CSC207H1">CSC207H1</A>/enrolment in Bioinformatics and Computational Biology (BCB) subject POSt; CGPA 1.5/enrolment in a CSC subject POSt.<BR> DR=SCI; BR=5<BR><HR>' 
 
 def get_course_details(course_des):
@@ -29,46 +29,26 @@ def get_course_details(course_des):
     course_info.append( course_des[(pos + 13):])
     
     return course_info
-    
 
-def JANDA_TOSS_SALAD(price):
+
+course_lists = [ ["CSC148H1", "/", "CSC150H1", ",", "CSC165H1", "/", "CSC240H1", "/",
+"CSC148H1", ";", "/"] ]
+
+
+def expand_one_or(course_lists):
     
-    if price > 0:
-        return "WRONG HE DOES IT FOR FREE!"
+    new_course_lists = []
     
-    # Toss SALAD ANYWHERE ON DA PLANET
-    global Andrej
-    
-    salads_tossed = 0
-    
-    salads_left = 7125000000
-    while Andrej == 'DUMB BITCH':
+    for lis in course_lists:
+        pos = lis.index('/')
+        temp1 = lis[:pos] + lis[pos+2:]
+        temp2 = lis[:pos-1] + lis[pos+1:]
         
-        if salads_tossed%2 == 1:
-            print ("SALAD TOSSED WITH JELLEY")
-        else:
-            print ("SALAD TOSSED WITH SYRUP")
-            salads_tossed += 1
-            
-            salads_left -= 1
-            
-        if salads_left == 0:
-            #AGAIN
-            JANDA_TOSS_SALAD(0)
-    
-    
-    
-    
-    
-    
-    
-    
+        new_course_lists.append(temp1)
+        new_course_lists.append(temp2)
+    return new_course_lists
 
 
 if __name__ == '__main__':
-    #get_individual_courses(course_desc_page)
-    
-    get_course_details(course_des)
-
-    
+    print (expand_one_or(course_lists))
 
