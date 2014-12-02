@@ -1,5 +1,4 @@
 
-course_desc_page = "http://www.cs.toronto.edu/~guerzhoy/180/assignments/a3/csc_short.htm"
 
 def get_individual_courses(course_desc_page):
     '''Returns a list of all the different course descriptions including the 
@@ -38,26 +37,13 @@ def get_course_details(course_des):
         
     pos = course_des.find('Prerequisite:')
     
-    course_info.append( course_des[(pos + 13):])
+    course_info.append(course_des[(pos + 13):])
     
     pos = course_info[1].find(';')
     
     course_info[1] = course_info[1][:pos]
     
     return course_info
-
-def expand_one_or(course_lists):
-    
-    new_course_lists = []
-    
-    for lis in course_lists:
-        pos = lis.index('/')
-        temp1 = lis[:pos] + lis[pos+2:]
-        temp2 = lis[:pos-1] + lis[pos+1:]
-        
-        new_course_lists.append(temp1)
-        new_course_lists.append(temp2)
-    return new_course_lists
 
 def prereq_str_to_list(prereq_str):
     
@@ -73,26 +59,41 @@ def prereq_str_to_list(prereq_str):
         prereq_str= prereq_str[pos + 4:]
     return course_options
 
+def expand_one_or(pre_lis):
+    
+    for 
+    pos = lis.index("/")
+    temp1 = lis[:pos] + lis[pos+2:]
+    temp2 = lis[:pos-1] + lis[pos+1:]
+    
+    new_course_lists.append(temp1)
+    new_course_lists.append(temp2)
+        
+    return new_course_lists
         
 def expand_all_ors(preq_lis):
+    pass
     
-    while '/' in preq_lis[0]:
-        preq_lis = expand_one_or(preq_lis)
-        
+
+def eliminale_duplicates(preq_lis):
     tmp2 = []
-    remove_index = []
+    remove_index = []    
     
     for i in range(len(preq_lis)):
-        tmp = sorted(preq_lis[i])
-        
-        if tmp not in tmp2:
-            tmp2.append(tmp)
-        else:
-            remove_index.append(preq_lis[i])
+            tmp = sorted(preq_lis[i])
             
+    if tmp not in tmp2:
+        tmp2.append(tmp)
+    else:
+        remove_index.append(preq_lis[i])
+                
     for e in remove_index:
         pos = preq_lis.index(e)
-        del preq_lis[pos]
+        del preq_lis[pos]      
+    
+    return preq_lis
+
+def clean_combine(preq_lis):
     
     for i in range(len(preq_lis)):
         tmp = []
@@ -101,17 +102,16 @@ def expand_all_ors(preq_lis):
             if course not in tmp and course != '':
                 tmp.append(course)
         preq_lis[i] = tmp
-        
-    return preq_lis 
             
+    return preq_lis     
 
-def build_prerequisite_dict(course_desc_page):
-    '''Returns a dictionary of all the courses on the website as the keys and
+'''def build_prerequisite_dict(course_desc_page):
+    Returns a dictionary of all the courses on the website as the keys and
     all of the possible sets of course prerequisites as the values.
     
     Arguments:
     course_desc_page -- HTML
-    '''
+    
     
     prerequisite_dict = {}
     
@@ -125,12 +125,17 @@ def build_prerequisite_dict(course_desc_page):
     
     for course_dec in course_details:
         course_dec[1] = prereq_str_to_list(course_dec[1])
+        course_dec[1] = expand_all_ors(course_dec[1])
+
     
     for course_description in course_details:
         prerequisite_dict[course_description[0]] = course_description[1]
-    
+        
+    print(prerequisite_dict)'''
 
 if __name__ == '__main__':
+    
+    course_desc_page = "http://www.cs.toronto.edu/~guerzhoy/180/assignments/a3/csc_short.htm"
     
     testing = build_prerequisite_dict(course_desc_page)
 
