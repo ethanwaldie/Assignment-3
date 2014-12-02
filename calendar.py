@@ -143,7 +143,7 @@ def build_prerequisite_dict(course_desc_page):
         prerequisite_dict[k] = tmp
     
     return prerequisite_dict
-    
+
 
 if __name__ == '__main__':
     
