@@ -97,6 +97,8 @@ if __name__ == '__main__':
 
     prereq_str = prereq_str_to_list(test)
     
+    print(prereq_str)
+    
     expand_one = expand_all_ors([prereq_str])
     
     print(expand_one)
