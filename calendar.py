@@ -17,11 +17,13 @@ def get_course_details(course_des):
     
     course_info = []
     
-    course_info.append(course_des[:8])
-    
-    pos = course_des.find('Prerequisite:')
-    
-    course_info.append( course_des[(pos + 13):])
+    for i in range(len(course_des)):
+        
+        course_info.append(course_des[:8])
+        
+        pos = course_des.find('Prerequisite:')
+        
+        course_info.append( course_des[(pos + 13):])
     
     return course_info
 
@@ -38,7 +40,6 @@ def expand_one_or(course_lists):
         new_course_lists.append(temp2)
     return new_course_lists
 
-
 def prereq_str_to_list(prereq_str):
     
     course_options = []
@@ -52,7 +53,6 @@ def prereq_str_to_list(prereq_str):
             course_options.append(prereq_str[pos+4:pos+5])
         prereq_str= prereq_str[pos + 4:]
     return course_options
-        
         
 
 
