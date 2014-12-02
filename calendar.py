@@ -1,8 +1,15 @@
-import collections
 
-course_desc_page = "http://www.cs.toronto.edu/~guerzhoy/180/assignments/a3/csc_short.htm"
 
 def get_individual_courses(course_desc_page):
+    '''Returns a list of all the different course descriptions including the 
+    course name itself (which is located at the begining of the string). This
+    function assumes that the notaion '<P><B>' Denotes a new entry for each
+    course and that the words 'DR=sci; BR=5' denote a course entry and not
+    the first part of the course.
+    
+    Arguments:
+    Course_desc_page -- HTML link as a string
+    '''
     import urllib.request
     f = urllib.request.urlopen(course_desc_page)
     page = f.read().decode("utf-8")
@@ -15,31 +22,28 @@ def get_individual_courses(course_desc_page):
     
          
 def get_course_details(course_des):
+    '''Returns a list of with the course name as the first element and the 
+    subsequent course description of only the prerequisites. This function
+    assumes that the notation 'Prerequisite:' means that the list of
+    prerequisites begins and the ';' notation means the list of prerequisits
+    ends.
+    Arguments:
+    course_des -- str
+    '''
     
     course_info = []
     
-    for i in range(len(course_des)):
+    course_info.append(course_des[:8])
         
-        course_info.append(course_des[:8])
-        
-        pos = course_des.find('Prerequisite:')
-        
-        course_info.append( course_des[(pos + 13):])
+    pos = course_des.find('Prerequisite:')
+    
+    course_info.append(course_des[(pos + 13):])
+    
+    pos = course_info[1].find(';')
+    
+    course_info[1] = course_info[1][:pos]
     
     return course_info
-
-def expand_one_or(course_lists):
-    
-    new_course_lists = []
-    
-    for lis in course_lists:
-        pos = lis.index('/')
-        temp1 = lis[:pos] + lis[pos+2:]
-        temp2 = lis[:pos-1] + lis[pos+1:]
-        
-        new_course_lists.append(temp1)
-        new_course_lists.append(temp2)
-    return new_course_lists
 
 def prereq_str_to_list(prereq_str):
     
@@ -54,26 +58,42 @@ def prereq_str_to_list(prereq_str):
             course_options.append(prereq_str[pos+4:pos+5])
         prereq_str= prereq_str[pos + 4:]
     return course_options
+
+def expand_one_or(pre_lis):
+    
+    for 
+    pos = lis.index("/")
+    temp1 = lis[:pos] + lis[pos+2:]
+    temp2 = lis[:pos-1] + lis[pos+1:]
+    
+    new_course_lists.append(temp1)
+    new_course_lists.append(temp2)
+        
+    return new_course_lists
         
 def expand_all_ors(preq_lis):
+    pass
     
-    while '/' in preq_lis[0]:
-        preq_lis = expand_one_or(preq_lis)
-        
+
+def eliminale_duplicates(preq_lis):
     tmp2 = []
-    remove_index = []
+    remove_index = []    
     
     for i in range(len(preq_lis)):
-        tmp = sorted(preq_lis[i])
-        
-        if tmp not in tmp2:
-            tmp2.append(tmp)
-        else:
-            remove_index.append(preq_lis[i])
-
+            tmp = sorted(preq_lis[i])
+            
+    if tmp not in tmp2:
+        tmp2.append(tmp)
+    else:
+        remove_index.append(preq_lis[i])
+                
     for e in remove_index:
         pos = preq_lis.index(e)
-        del preq_lis[pos]
+        del preq_lis[pos]      
+    
+    return preq_lis
+
+def clean_combine(preq_lis):
     
     for i in range(len(preq_lis)):
         tmp = []
@@ -82,24 +102,46 @@ def expand_all_ors(preq_lis):
             if course not in tmp and course != '':
                 tmp.append(course)
         preq_lis[i] = tmp
-        
-    return preq_lis 
             
+    return preq_lis     
 
-                  
-if __name__ == '__main__':
+'''def build_prerequisite_dict(course_desc_page):
+    Returns a dictionary of all the courses on the website as the keys and
+    all of the possible sets of course prerequisites as the values.
     
-    course_des = 'CSC209H1"></A> <P><B>CSC209H1<BR>Software Tools and Systems Programming [24L, 12T]</B> <P>Software techniques in a Unix-style environment, using scripting languages and a machine-oriented programming language (typically C). What goes on in the operating system when programs are executed. Core topics: creating and using software tools, pipes and filters, file processing, shell programming, processes, system calls, signals, basic network programming.<BR>Exclusion: <A HREF="crs_csc.htm#CSC372H1">CSC372H1</A>, 408H1, <A HREF="crs_csc.htm#CSC369H1">CSC369H1</A>, 468H1, <A HREF="crs_csc.htm#CSC469H1">CSC469H1</A>.<BR> Prerequisite: <A HREF="crs_csc.htm#CSC207H1">CSC207H1</A>/enrolment in Bioinformatics and Computational Biology (BCB) subject POSt; CGPA 1.5/enrolment in a CSC subject POSt.<BR> DR=SCI; BR=5<BR><HR>'
+    Arguments:
+    course_desc_page -- HTML
     
-    page = get_course_details(course_des)
     
-    test = '<A HREF="crs_csc.htm#CSC148H1">CSC148H1</A>/<A HREF="crs_csc.htm#CSC150H1">CSC150H1</A>, <A HREF="crs_csc.htm#CSC165H1">CSC165H1</A>/<A HREF="crs_csc.htm#CSC240H1">CSC240H1</A>/(<A HREF="crs_csc.htm#CSC148H1">CSC148H1</A> as given before FALL 2003); CGPA 1.5/enrolment in a CSC subject POSt.<BR>'
+    prerequisite_dict = {}
+    
+    #Read in the HTML page
+    courses = get_individual_courses(course_desc_page)
+   
+    
+    course_details = [] 
+    for course in courses:
+        course_details.append(get_course_details(course))
+    
+    for course_dec in course_details:
+        course_dec[1] = prereq_str_to_list(course_dec[1])
+        course_dec[1] = expand_all_ors(course_dec[1])
 
-    prereq_str = prereq_str_to_list(test)
     
+<<<<<<< HEAD
     print(prereq_str)
     
     expand_one = expand_all_ors([prereq_str])
+=======
+    for course_description in course_details:
+        prerequisite_dict[course_description[0]] = course_description[1]
+        
+    print(prerequisite_dict)'''
+
+if __name__ == '__main__':
     
-    print(expand_one)
+    course_desc_page = "http://www.cs.toronto.edu/~guerzhoy/180/assignments/a3/csc_short.htm"
+>>>>>>> origin/master
     
+    testing = build_prerequisite_dict(course_desc_page)
+
