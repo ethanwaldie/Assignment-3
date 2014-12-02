@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> FETCH_HEAD
 course_desc_page = "http://www.cs.toronto.edu/~guerzhoy/180/assignments/a3/csc_short.htm"
 
 def get_individual_courses(course_desc_page):
@@ -17,23 +12,22 @@ def get_individual_courses(course_desc_page):
             lis.remove(x)
     return lis
     
-        
-
-course_des = 'CSC209H1"></A> <P><B>CSC209H1<BR>Software Tools and Systems Programming [24L, 12T]</B> <P>Software techniques in a Unix-style environment, using scripting languages and a machine-oriented programming language (typically C). What goes on in the operating system when programs are executed. Core topics: creating and using software tools, pipes and filters, file processing, shell programming, processes, system calls, signals, basic network programming.<BR>Exclusion: <A HREF="crs_csc.htm#CSC372H1">CSC372H1</A>, 408H1, <A HREF="crs_csc.htm#CSC369H1">CSC369H1</A>, 468H1, <A HREF="crs_csc.htm#CSC469H1">CSC469H1</A>.<BR> Prerequisite: <A HREF="crs_csc.htm#CSC207H1">CSC207H1</A>/enrolment in Bioinformatics and Computational Biology (BCB) subject POSt; CGPA 1.5/enrolment in a CSC subject POSt.<BR> DR=SCI; BR=5<BR><HR>' 
-
+         
 def get_course_details(course_des):
     
     course_info = []
     
-    course_info.append(course_des[:8])
-    
-    pos = course_des.find('Prerequisite:')
-    
-    course_info.append( course_des[(pos + 13):])
+    for i in range(len(course_des)):
+        
+        course_info.append(course_des[:8])
+        
+        pos = course_des.find('Prerequisite:')
+        
+        course_info.append( course_des[(pos + 13):])
     
     return course_info
 
-<<<<<<< HEAD
+
 
 course_lists = [ ["CSC148H1", "/", "CSC150H1", ",", "CSC165H1", "/", "CSC240H1", "/",
 "CSC148H1", ";", "/"] ]
@@ -55,7 +49,7 @@ def expand_one_or(course_lists):
 
 if __name__ == '__main__':
     print (expand_one_or(course_lists))
-=======
+
 def prereq_str_to_list(prereq_str):
     
     course_options = []
@@ -77,24 +71,7 @@ def prereq_str_to_list(prereq_str):
     
     return course_options
         
-        
-        
-    
-    
-    
-    
-    
-    
-
 
 if __name__ == '__main__':
-    #get_individual_courses(course_desc_page)
     
-    page = get_course_details(course_des)
-    
-    test = '<A HREF="crs_csc.htm#CSC148H1">CSC148H1</A>/<A HREF="crs_csc.htm#CSC150H1">CSC150H1</A>, <A HREF="crs_csc.htm#CSC165H1">CSC165H1</A>/<A HREF="crs_csc.htm#CSC240H1">CSC240H1</A>/(<A HREF="crs_csc.htm#CSC148H1">CSC148H1</A> as given before FALL 2003); CGPA 1.5/enrolment in a CSC subject POSt.<BR>'
-
-
-    print(prereq_str_to_list(test))
->>>>>>> FETCH_HEAD
 
