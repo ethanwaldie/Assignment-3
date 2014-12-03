@@ -187,12 +187,14 @@ def get_all_paths_to_course(course, path):
             
             if len(options) == 0:
                 options = tmp
+                
             else:
 
                 tmpath = options[:]
-                options = []
                 for x in range(len(tmp)):
-                    for y in range(len(tmpath)):
+                    for y in range(len(options)):
+                        if options[x] in tmpath:
+                            del options[x]                        
                         options.append(tmpath[y] + tmp[x])
                         
             print ("options", options)
